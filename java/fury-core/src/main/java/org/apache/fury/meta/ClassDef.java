@@ -787,4 +787,10 @@ public class ClassDef implements Serializable {
       ClassResolver classResolver, Class<?> type, List<Field> fields, boolean isObjectType) {
     return ClassDefEncoder.buildClassDef(classResolver, type, fields, isObjectType);
   }
+
+//  public ClassDef replaceRootClassTo(
+//      Class<?> targetCls
+//  ) {
+//    this.classSpec.entireClassName = targetCls.getName();
+//  }
 }

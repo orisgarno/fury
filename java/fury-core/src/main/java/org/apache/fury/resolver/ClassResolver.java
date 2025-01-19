@@ -1674,6 +1674,27 @@ public class ClassResolver {
     return classInfo;
   }
 
+  public ClassInfo readClassInfo(MemoryBuffer buffer, Class<?> targetClass) {
+    if (metaContextShareEnabled) {
+      ClassInfo classInfo = readClassInfoWithMetaShare(buffer, fury.getSerializationContext().getMetaContext());
+      ClassInfo targetClassInfo = getClassInfo(targetClass);
+      Serializer<Object> serializer = targetClassInfo.getSerializer();
+      classInfo.setSerializer(this, serializer);
+      return classInfo;
+    }
+
+    int header = buffer.readVarUint32Small14();
+    ClassInfo classInfo;
+    if ((header & 0b1) != 0) {
+      classInfo = readClassInfoFromBytes(buffer, classInfoCache, header);
+      classInfoCache = classInfo;
+    } else {
+      classInfo = getOrUpdateClassInfo((short) (header >> 1));
+    }
+    currentReadClass = classInfo.cls;
+    return classInfo;
+  }
+
   /**
    * Read class info from java data <code>buffer</code>. `classInfoCache` is used as a cache to
    * reduce map lookup to load class from binary.
