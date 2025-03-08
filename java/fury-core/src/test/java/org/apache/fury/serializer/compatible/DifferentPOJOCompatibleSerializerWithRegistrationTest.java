@@ -60,9 +60,26 @@ public class DifferentPOJOCompatibleSerializerWithRegistrationTest extends Asser
     ClassCompleteField<String> subclass = new ClassCompleteField<>("subclass", "subclass2");
     ClassCompleteField<ClassCompleteField<String>> classCompleteField =
         new ClassCompleteField<>(subclass, subclass);
-    byte[] serialized = getFury(ClassCompleteField.class).serializeJavaObject(classCompleteField);
+    byte[] serialized = getFury(
+        RANDOM_CLASS_1.class,
+        RANDOM_CLASS_2.class,
+        RANDOM_CLASS_3.class,
+        ClassCompleteField.class,
+        RANDOM_CLASS_4.class,
+        RANDOM_CLASS_5.class,
+        RANDOM_CLASS_6.class,
+        RANDOM_CLASS_7.class,
+        RANDOM_CLASS_8.class,
+        RANDOM_CLASS_9.class
+        ).serializeJavaObject(classCompleteField);
+
     ClassMissingField<ClassMissingField<String>> classMissingField =
-        getFury(ClassMissingField.class).deserializeJavaObject(serialized, ClassMissingField.class);
+        getFury(
+            ClassMissingField.class,
+            RANDOM_CLASS_10.class,
+            RANDOM_CLASS_11.class,
+            RANDOM_CLASS_12.class
+        ).deserializeJavaObject(serialized, ClassMissingField.class);
 
     assertEq(classCompleteField, classMissingField);
   }
@@ -100,4 +117,20 @@ public class DifferentPOJOCompatibleSerializerWithRegistrationTest extends Asser
     assertEquals(classCompleteField.getPrivateString(), classMissingField.getPrivateString());
     assertEquals(classCompleteField.getPrivateInt(), classMissingField.getPrivateInt());
   }
+
+
+
+  class RANDOM_CLASS_1 {}
+  class RANDOM_CLASS_2 {}
+  class RANDOM_CLASS_3 {}
+  class RANDOM_CLASS_4 {}
+  class RANDOM_CLASS_5 {}
+  class RANDOM_CLASS_6 {}
+  class RANDOM_CLASS_7 {}
+  class RANDOM_CLASS_8 {}
+  class RANDOM_CLASS_9 {}
+  class RANDOM_CLASS_10 {}
+  class RANDOM_CLASS_11 {}
+  class RANDOM_CLASS_12 {}
+  class RANDOM_CLASS_13 {}
 }
